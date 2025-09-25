@@ -377,16 +377,16 @@ body {
     align-items: center;
     gap: 15px;
     padding: 8px 12px;
-    background: #f8f9fa;
+    background-color: var(--border-color);
     border-radius: 4px;
     border: none;
     font-size: 12px;
-    color: #70757a;
+    color: var(--text-color);
 }
 
 .score-main {
     font-weight: 500;
-    color: #202124;
+    color: var(--text-color);
 }
 
 .score-breakdown {

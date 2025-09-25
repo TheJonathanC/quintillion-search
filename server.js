@@ -400,6 +400,25 @@ app.get('/api/index-info', (req, res) => {
     });
 });
 
+// Route to serve individual sample pages
+app.get('/page/:filename', (req, res) => {
+    const filename = req.params.filename;
+    const filePath = path.join(__dirname, 'sample-pages', filename);
+    
+    // Check if file exists
+    if (!fs.existsSync(filePath)) {
+        return res.status(404).send('Page not found');
+    }
+    
+    try {
+        const htmlContent = fs.readFileSync(filePath, 'utf8');
+        res.send(htmlContent);
+    } catch (error) {
+        console.error('Error reading file:', error);
+        res.status(500).send('Error loading page');
+    }
+});
+
 // Start crawling and indexing when server starts
 crawlAndIndex();
 

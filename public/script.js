@@ -322,10 +322,22 @@ function createResultElement(result, rank) {
     const titleElement = document.createElement('h3');
     titleElement.className = 'result-title';
     titleElement.textContent = result.title || 'Untitled';
+    titleElement.style.cursor = 'pointer';
+    titleElement.addEventListener('click', function() {
+        // Open the sample page in a new tab
+        window.open(`/page/${result.filename}`, '_blank');
+        addTerminalLog(`Opened page: ${result.filename}`, 'info');
+    });
     
     const urlElement = document.createElement('div');
     urlElement.className = 'result-url';
     urlElement.textContent = `sample-pages/${result.filename}`;
+    urlElement.style.cursor = 'pointer';
+    urlElement.addEventListener('click', function() {
+        // Open the sample page in a new tab
+        window.open(`/page/${result.filename}`, '_blank');
+        addTerminalLog(`Opened page: ${result.filename}`, 'info');
+    });
     
     const descriptionElement = document.createElement('p');
     descriptionElement.className = 'result-description';
