@@ -57,6 +57,11 @@ function displayResults(results, query) {
         return;
     }
     
+    // Show search info if variations were found
+    if (results.length > 0 && results[0].matchedVariations) {
+        showSearchInfo(query, results);
+    }
+    
     // Create result elements
     results.forEach((result, index) => {
         const resultElement = createResultElement(result, index + 1);
@@ -80,6 +85,16 @@ function createResultElement(result, rank) {
     const descriptionElement = document.createElement('p');
     descriptionElement.className = 'result-description';
     descriptionElement.textContent = result.metaDescription || 'No description available.';
+    
+    // Show matched variations if available
+    if (result.matchedVariations && result.matchedVariations.length > 0) {
+        const variationsElement = document.createElement('div');
+        variationsElement.className = 'matched-variations';
+        variationsElement.innerHTML = `
+            <small><strong>Matched terms:</strong> ${result.matchedVariations.join(', ')}</small>
+        `;
+        descriptionElement.appendChild(variationsElement);
+    }
     
     const scoreContainer = document.createElement('div');
     scoreContainer.className = 'result-score';
@@ -111,6 +126,18 @@ function createResultElement(result, rank) {
     resultDiv.appendChild(scoreContainer);
     
     return resultDiv;
+}
+
+// Show search info with variations
+function showSearchInfo(query, results) {
+    const infoDiv = document.createElement('div');
+    infoDiv.className = 'search-info-results';
+    infoDiv.innerHTML = `
+        <p><strong>Search results for:</strong> "${query}" 
+        <small>(including related forms like plurals, past tense, etc.)</small></p>
+        <p><strong>Found ${results.length} matching pages</strong></p>
+    `;
+    resultsContainer.appendChild(infoDiv);
 }
 
 // Show loading state
