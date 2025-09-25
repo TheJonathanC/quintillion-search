@@ -277,30 +277,30 @@ function crawlAndIndex() {
 }
 
 // Enhanced function to calculate search scores with stemming
-function calculateScore(filename, searchTerm, pageInfo) {
+function calculateScore(filename, searchTerm, pageInfo, searchVariations = null) {
     let titleScore = 0;
     let descriptionScore = 0;
     let frequencyScore = 0;
     let backlinkScore = backlinkScores[filename] || 0;
     
-    const searchTermLower = searchTerm.toLowerCase();
-    const searchVariations = getWordVariations(searchTermLower);
+    // Use provided variations or calculate them
+    const variations = searchVariations || getWordVariations(searchTerm.toLowerCase());
     
     // Title score: 15 points if any variation of term is in title
     const titleLower = pageInfo.title.toLowerCase();
-    if (searchVariations.some(variation => titleLower.includes(variation))) {
+    if (variations.some(variation => titleLower.includes(variation))) {
         titleScore = 15;
     }
     
     // Description score: 10 points if any variation of term is in meta description
     const descriptionLower = pageInfo.metaDescription.toLowerCase();
-    if (searchVariations.some(variation => descriptionLower.includes(variation))) {
+    if (variations.some(variation => descriptionLower.includes(variation))) {
         descriptionScore = 10;
     }
     
     // Frequency score: 1 point for each occurrence of any variation in body text
     const bodyTextLower = pageInfo.bodyText.toLowerCase();
-    searchVariations.forEach(variation => {
+    variations.forEach(variation => {
         const matches = bodyTextLower.match(new RegExp(variation, 'g'));
         if (matches) {
             frequencyScore += matches.length;
@@ -315,7 +315,7 @@ function calculateScore(filename, searchTerm, pageInfo) {
         frequencyScore,
         backlinkScore,
         totalScore,
-        matchedVariations: searchVariations.filter(variation => 
+        matchedVariations: variations.filter(variation => 
             titleLower.includes(variation) || 
             descriptionLower.includes(variation) || 
             bodyTextLower.includes(variation)
@@ -331,17 +331,18 @@ app.get('/search', (req, res) => {
         return res.json({ error: 'Query parameter "q" is required' });
     }
     
-    console.log(`Search query received: "${query}"`);
+    console.log(`🔍 Search query received: "${query}"`);
     
     const searchTerm = sanitizeWord(query);
     
     if (!searchTerm) {
+        console.log('❌ Empty search term after sanitization');
         return res.json({ results: [] });
     }
     
     // Get all variations of the search term
     const searchVariations = getWordVariations(searchTerm);
-    console.log(`Search variations: [${searchVariations.join(', ')}]`);
+    console.log(`📝 Search variations: [${searchVariations.join(', ')}]`);
     
     // Find pages that contain any variation of the search term
     const matchingPagesSet = new Set();
@@ -349,42 +350,44 @@ app.get('/search', (req, res) => {
     searchVariations.forEach(variation => {
         const pages = invertedIndex[variation] || [];
         pages.forEach(page => matchingPagesSet.add(page));
+        if (pages.length > 0) {
+            console.log(`   "${variation}" found in: ${pages.join(', ')}`);
+        }
     });
     
     const matchingPages = Array.from(matchingPagesSet);
     
-    console.log(`Found ${matchingPages.length} pages matching search variations`);
+    console.log(`📄 Found ${matchingPages.length} pages matching search variations`);
     
     // Calculate scores for each matching page
     const results = matchingPages.map(filename => {
         const pageInfo = pageData[filename];
-        const scores = calculateScore(filename, query, pageInfo);
+        const scores = calculateScore(filename, query, pageInfo, searchVariations);
+        
+        console.log(`   ${filename}: ${scores.totalScore} points (T:${scores.titleScore} D:${scores.descriptionScore} F:${scores.frequencyScore} B:${scores.backlinkScore})`);
         
         return {
             filename: filename,
             title: pageInfo.title,
             metaDescription: pageInfo.metaDescription,
             totalScore: scores.totalScore,
-            matchedVariations: scores.matchedVariations,
             breakdown: {
                 titleScore: scores.titleScore,
                 descriptionScore: scores.descriptionScore,
                 frequencyScore: scores.frequencyScore,
                 backlinkScore: scores.backlinkScore
-            }
+            },
+            matchedVariations: scores.matchedVariations
         };
     });
     
     // Sort by total score (descending)
     results.sort((a, b) => b.totalScore - a.totalScore);
     
-    console.log('Search results:', results.map(r => `${r.filename}: ${r.totalScore} (matched: ${r.matchedVariations.join(', ')})`));
+    console.log(`🏆 Final rankings: ${results.map((r, i) => `#${i+1} ${r.filename} (${r.totalScore})`).join(', ')}`);
+    console.log('─'.repeat(60));
     
-    res.json({ 
-        results: results,
-        searchTerm: searchTerm,
-        searchVariations: searchVariations
-    });
+    res.json({ results: results });
 });
 
 // API endpoint to get indexing information (for debugging)

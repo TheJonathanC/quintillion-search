@@ -3,33 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simple SEO Search Engine Demo</title>
+    <title>Quintillion</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>Simple SEO Search Engine Demo</h1>
-            <p class="subtitle">Demonstrating crawling, indexing, ranking, and SEO principles</p>
-        </header>
-        
-        <main>
+    <!-- Home page view -->
+    <div id="home-view" class="home-view">
+        <div class="home-content">
+            <div class="logo">Quintillion</div>
             <div class="search-section">
                 <div class="search-container">
-                    <input type="text" id="search-input" placeholder="Enter your search query..." />
-                    <button id="search-button">Search</button>
+                    <div class="search-box">
+                        <input type="text" id="search-input" placeholder="" autocomplete="off" />
+                        <button id="search-button" class="search-btn">
+                            <svg width="16" height="16" viewBox="0 0 24 24">
+                                <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+                            </svg>
+                        </button>
+                    </div>
                 </div>
-                <p class="search-info">
-                    Try searching for: "plant" (finds plants, planting, planted), "cook" (finds cooking, cooked), "travel" (finds traveling, traveled), "photo" (finds photography), "garden" (finds gardening, gardens)
-                </p>
             </div>
-            
-            <div id="results-container"></div>
+            <div class="home-debug">
+                <button id="home-terminal-toggle" class="home-debug-btn">
+                    <svg width="16" height="16" viewBox="0 0 24 24">
+                        <path d="M20,19V7H4V19H20M20,3A2,2 0 0,1 22,5V19A2,2 0 0,1 20,21H4A2,2 0 0,1 2,19V5A2,2 0 0,1 4,3H20M13,17V15H18V17H13M9.58,13L5.57,9H8.4L11.7,12.3C12.09,12.69 12.09,13.33 11.7,13.72L8.42,17H5.59L9.58,13Z"/>
+                    </svg>
+                    Debug Console
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Results page view -->
+    <div id="results-view" class="results-view hidden">
+        <header class="results-header">
+            <div class="header-left">
+                <div class="logo-small">Quintillion</div>
+                <div class="search-container-small">
+                    <div class="search-box-small">
+                        <input type="text" id="search-input-small" placeholder="" autocomplete="off" />
+                        <button id="search-button-small" class="search-btn-small">
+                            <svg width="16" height="16" viewBox="0 0 24 24">
+                                <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="header-right">
+                <button id="terminal-toggle" class="terminal-toggle">
+                    <svg width="20" height="20" viewBox="0 0 24 24">
+                        <path d="M20,19V7H4V19H20M20,3A2,2 0 0,1 22,5V19A2,2 0 0,1 20,21H4A2,2 0 0,1 2,19V5A2,2 0 0,1 4,3H20M13,17V15H18V17H13M9.58,13L5.57,9H8.4L11.7,12.3C12.09,12.69 12.09,13.33 11.7,13.72L8.42,17H5.59L9.58,13Z"/>
+                    </svg>
+                    Debug
+                </button>
+            </div>
+        </header>
+
+        <main class="results-main">
+            <div class="content-area">
+                <div class="results-info"></div>
+                <div id="results-container"></div>
+            </div>
         </main>
-        
-        <footer>
-            <p>This demo showcases how search engines crawl, index, and rank web pages based on SEO factors like title tags, meta descriptions, content frequency, and backlink authority.</p>
-        </footer>
+    </div>
+    
+    <!-- Terminal Panel - Global (outside of views) -->
+    <div id="terminal-panel" class="terminal-panel hidden">
+        <div class="terminal-header">
+            <span>Search Engine Debug Console</span>
+            <button id="terminal-close">×</button>
+        </div>
+        <div class="terminal-content">
+            <div id="terminal-output"></div>
+        </div>
+        <div class="resize-handle"></div>
     </div>
     
     <script src="script.js"></script>
