@@ -7,7 +7,19 @@ const app = express();
 const PORT = 3000;
 
 // Serve static files from public directory
-app.use(express.static('public'));
+app.use(express.static('public', {
+    maxAge: '1y',
+    etag: false
+}));
+
+// Explicitly serve CSS and JS files
+app.get('/style.css', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'style.css'));
+});
+
+app.get('/script.js', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'script.js'));
+});
 
 // Root route - serve the main index.html file
 app.get('/', (req, res) => {
