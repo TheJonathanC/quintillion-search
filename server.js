@@ -9,6 +9,11 @@ const PORT = 3000;
 // Serve static files from public directory
 app.use(express.static('public'));
 
+// Root route - serve the main index.html file
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
 // In-memory storage for our search index and page data
 let invertedIndex = {};
 let pageData = {};
@@ -322,6 +327,20 @@ function calculateScore(filename, searchTerm, pageInfo, searchVariations = null)
         )
     };
 }
+
+// Route to serve individual sample pages
+app.get('/page/:filename', (req, res) => {
+    const filename = req.params.filename;
+    const filePath = path.join(__dirname, 'sample-pages', filename);
+    
+    // Check if file exists
+    if (!fs.existsSync(filePath)) {
+        return res.status(404).send('Page not found');
+    }
+    
+    // Serve the HTML file
+    res.sendFile(filePath);
+});
 
 // Search API endpoint with stemming support
 app.get('/search', (req, res) => {
