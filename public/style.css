@@ -610,6 +610,10 @@ body {
         margin-bottom: 2px;
     }
     
+    .content-area {
+        padding: 15px 15px 15px 20px !important; /* Reduce left padding on mobile */
+    }
+    
     .info-pill {
         font-size: 12px;
         padding: 6px 12px;
