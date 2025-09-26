@@ -49,7 +49,12 @@ const backlinkScores = {
     "home-organization.html": 4,
     "woodworking-projects.html": 3,
     "urban-beekeeping.html": 2,
-    "vintage-car-restoration.html": 5
+    "vintage-car-restoration.html": 5,
+    // Biryani pages
+    "deion-bhai-biryani.html": 15,          // Highest authority - excellent SEO
+    "hyderabadi-biryani-history.html": 6,   // Moderate SEO
+    "biryani-restaurant-review.html": 2,    // Poor SEO
+    "biryani-recipe.html": 1                // Very poor SEO
 };
 
 // Simple stemming rules for common word variations
