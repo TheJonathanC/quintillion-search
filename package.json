@@ -1,17 +1,27 @@
 {
   "name": "quintillion-search-engine",
-  "version": "1.0.0",
-  "description": "A search engine demo showcasing SEO principles",
+  "version": "2.0.0",
+  "description": "Quintillion Search Engine v2 - Hybrid SEO & PageRank Graph Search with Next.js",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
-    "dev": "node server.js"
+    "dev": "next dev -p 3000",
+    "build": "next build",
+    "start": "next start -p 3000",
+    "crawler": "python3 crawler/crawler.py",
+    "pagerank": "python3 crawler/pagerank.py",
+    "mongo:start": "./scripts/start_mongo.sh",
+    "legacy": "node server.js"
   },
   "dependencies": {
+    "cheerio": "^1.0.0-rc.12",
     "express": "^4.18.2",
-    "cheerio": "^1.0.0-rc.12"
+    "lucide-react": "^1.45.0",
+    "mongodb": "^7.6.0",
+    "next": "^14.2.35",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
   },
   "engines": {
-    "node": "22.x"
+    "node": ">=20.x"
   }
 }
