@@ -97,9 +97,28 @@ SKIPPED_EXTENSIONS = (
     '.css', '.js', '.json', '.xml', '.rss', '.woff', '.woff2', '.ttf', '.eot'
 )
 
+def get_mongo_uri(default="mongodb://127.0.0.1:27017/"):
+    uri = os.environ.get("MONGODB_URI")
+    if uri:
+        return uri
+    for env_name in ('.env.local', '.env'):
+        env_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), env_name)
+        if os.path.exists(env_path):
+            try:
+                with open(env_path) as f:
+                    for line in f:
+                        line = line.strip()
+                        if line.startswith('MONGODB_URI='):
+                            val = line.split('=', 1)[1].strip().strip('\'"')
+                            if val:
+                                return val
+            except Exception:
+                pass
+    return default
+
 class PoliteWebCrawler:
-    def __init__(self, mongo_uri="mongodb://localhost:27017/", db_name="quintillion"):
-        self.mongo_uri = mongo_uri
+    def __init__(self, mongo_uri=None, db_name="quintillion"):
+        self.mongo_uri = mongo_uri or get_mongo_uri()
         self.db_name = db_name
         self.client = None
         self.db = None
