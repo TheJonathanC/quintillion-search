@@ -45,12 +45,12 @@
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-family: arial, sans-serif;
   font-size: 14px;
   color: var(--text-color);
   background: var(--bg-color);
   overflow-x: hidden;
-  transition: background-color 0.25s ease, color 0.25s ease;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 a {
@@ -128,12 +128,12 @@ a {
 }
 
 .logo {
+  font-family: arial, sans-serif;
   font-size: 90px;
-  font-weight: 500;
+  font-weight: normal;
   color: #4285f4;
   margin-bottom: 30px;
-  letter-spacing: -4px;
-  user-select: none;
+  letter-spacing: -5px;
 }
 
 .search-section {
@@ -309,12 +309,11 @@ a {
 }
 
 .logo-small {
-  font-size: 22px;
+  font-family: arial, sans-serif;
+  font-size: 20px;
   color: #4285f4;
-  font-weight: 500;
-  letter-spacing: -0.5px;
+  font-weight: normal;
   cursor: pointer;
-  user-select: none;
 }
 
 .search-container-small {
@@ -1036,5 +1035,12 @@ a {
   }
   .results-main.terminal-open .content-area {
     margin-right: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .logo {
+    font-size: 60px;
+    margin-bottom: 20px;
   }
 }
